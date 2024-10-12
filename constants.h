@@ -5,6 +5,8 @@ constexpr int block_size {20};
 constexpr int speed {block_size};
 constexpr int window_height {480};
 constexpr int window_width {480};
+constexpr int block_rows {14};
+constexpr int block_cols {7};
 
 constexpr std::array<std::pair<int, int>, 3> block_L {
     std::pair {0, -1}, /*  center   */

@@ -24,9 +24,6 @@
     <ClCompile Include="Next_block.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Next_block.h">
-      <Filter>Header Files</Filter>
-    </ClCompile>
     <ClCompile Include="Score.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -41,5 +38,11 @@
     <ClInclude Include="Score.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Next_block.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SDL3.dll" />
   </ItemGroup>
 </Project>

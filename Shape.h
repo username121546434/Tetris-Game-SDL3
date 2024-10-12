@@ -12,14 +12,15 @@ class Shape {
 private:
     std::pair<int, int> center;
     short rotations; // ranges from 0 to 3
-    const std::array<std::pair<int, int>, 3> &default_coors;
+    std::array<std::pair<int, int>, 3> const *default_coors;
     std::array<std::pair<int, int>, 3> curr_coors;
 public:
     Shape(int x, std::array<std::pair<int, int>, 3> &shape, short rotation = 0);
+    Shape &operator=(const Shape &);
     void calc_coors();
     void update_center();
     void rotate();
-    void draw(SDL_Renderer *renderer, int offset_x, int offset_y);
+    void draw(SDL_Renderer *renderer, int offset_x = 0, int offset_y = 0) const;
 };
 
 #endif

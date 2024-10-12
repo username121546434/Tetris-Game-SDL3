@@ -93,7 +93,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:/Users/Atharv/Downloads/SDL3-devel-3.1.3-mingw/SDL3-3.1.3/x86_64-w64-mingw32/include;C:/cmake/SDL3_ttf/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:/Users/Atharv/Downloads/SDL3-devel-3.1.3-mingw/SDL3-3.1.3/x86_64-w64-mingw32/include;C:/cmake/SDL3_ttf/include;$(LocalDebuggerWorkingDirectory);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <WarningLevel>Level3</WarningLevel>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -119,7 +119,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:/Users/Atharv/Downloads/SDL3-devel-3.1.3-mingw/SDL3-3.1.3/x86_64-w64-mingw32/include;C:/cmake/SDL3_ttf/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:/Users/Atharv/Downloads/SDL3-devel-3.1.3-mingw/SDL3-3.1.3/x86_64-w64-mingw32/include;C:/cmake/SDL3_ttf/include;$(LocalDebuggerWorkingDirectory);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Link>
@@ -132,7 +132,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Score.cpp" />
-    <ClCompile Include="Next_block.h" />
+    <ClInclude Include="Next_block.h" />
     <ClCompile Include="Next_block.cpp" />
     <ClCompile Include="Shape.cpp" />
     <ClCompile Include="Tetris.cpp" />
@@ -141,6 +141,9 @@
     <ClInclude Include="Score.h" />
     <ClInclude Include="constants.h" />
     <ClInclude Include="Shape.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SDL3.dll" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
