@@ -4,7 +4,8 @@
 #include <SDL3/SDL.h>
 #include <map>
 #include "Shape.h"
+#include "TextRenderer.h"
 
 std::array<std::pair<int, int>, 3> get_next_block();
 
-void draw_next_block_widget(SDL_Renderer *renderer, const Shape &shape);
+void draw_next_block_widget(SDL_Renderer *renderer, const Shape &shape, const TextRenderer &text);

@@ -8,6 +8,9 @@ constexpr int window_width {480};
 constexpr int block_rows {14};
 constexpr int block_cols {7};
 
+constexpr char* font_file {"game_over.ttf"};
+constexpr int font_size {60};
+
 constexpr std::array<std::pair<int, int>, 3> block_L {
     std::pair {0, -1}, /*  center   */
     std::pair {0,  1}, std::pair {1, 1}

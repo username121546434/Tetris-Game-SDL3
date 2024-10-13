@@ -5,6 +5,7 @@
 #include "Next_block.h"
 #include "Score.h"
 #include <map>
+#include "TextRenderer.h"
 
 static int score {0};
 
@@ -15,6 +16,7 @@ struct AppData {
     Shape curr_shape;
     //std::map<const std::array<std::pair<int, int>, 3>&, short> cached_rotation;
     std::array<std::array<SDL_Color, 7>, 14> grid;
+    TextRenderer text;
 };
 
 
@@ -31,6 +33,11 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
         return SDL_APP_FAILURE;
     }
 
+    if (!TTF_Init()) {
+        SDL_Log("Couldn't initialize SDL_ttf: %s", SDL_GetError());
+        return SDL_APP_FAILURE;
+    }
+
     AppData *ad = static_cast<AppData*>(SDL_calloc(1, sizeof(AppData)));
     //ad->cached_rotation = std::map<const std::array<std::pair<int, int>, 3>&, short> {};
     ad->score = 0;
@@ -38,6 +45,7 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
     ad->grid = std::array<std::array<SDL_Color, 7>, 14> {};
     ad->window = window;
     ad->renderer = renderer;
+    ad->text = TextRenderer {font_file, font_size};
 
     *appstate = ad;
 
@@ -58,14 +66,16 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
     SDL_RenderClear(renderer);
 
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-    draw_next_block_widget(renderer, ad->curr_shape);
+    draw_next_block_widget(renderer, ad->curr_shape, ad->text);
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-    draw_score_widget(renderer, 0);
+    draw_score_widget(renderer, 0, ad->text);
 
     SDL_RenderPresent(renderer);
     return SDL_APP_CONTINUE;
 }
 
 void SDL_AppQuit(void *appstate, SDL_AppResult result) {
+    SDL_free(appstate);
+    TTF_Quit();
     /* SDL will clean up the window/renderer for us. */
 }
