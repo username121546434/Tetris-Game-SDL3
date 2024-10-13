@@ -53,6 +53,6 @@
     <None Include="SDL3_ttf.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Font Include="..\Crossy Road\game_over.ttf" />
+    <Font Include="game_over.ttf" />
   </ItemGroup>
 </Project>
