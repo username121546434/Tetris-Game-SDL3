@@ -36,7 +36,7 @@ TextRenderer &TextRenderer::operator=(TextRenderer &&rhs) {
     TTF_CloseFont(font);
     font = rhs.font;
     rhs.font = nullptr;
-    this->fontFile = rhs.fontFile;
+    this->fontFile = std::string {rhs.fontFile};
     this->fontSize = rhs.fontSize;
 
     return *this;
