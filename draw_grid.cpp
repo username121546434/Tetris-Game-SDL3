@@ -2,9 +2,9 @@
 #include <sstream>
 
 void draw_grid(SDL_Renderer *renderer, const std::array<std::array<SDL_Color, 7>, 14> &grid) {
-    SDL_RenderLine(renderer, 30, 30, 30, 450);
-    SDL_RenderLine(renderer, 270, 30, 270, 450);
-    SDL_RenderLine(renderer, 30, 450, 270, 450);
+    SDL_RenderLine(renderer, left_boundary, top_boundary, left_boundary, bottom_boundary);
+    SDL_RenderLine(renderer, right_boundary, top_boundary, right_boundary, bottom_boundary);
+    SDL_RenderLine(renderer, left_boundary, bottom_boundary, right_boundary, bottom_boundary);
 
     //for (const auto &row: grid) {
     //    std::stringstream s {};
