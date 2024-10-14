@@ -61,7 +61,6 @@ void Shape::draw(SDL_Renderer *renderer, int offset_x, int offset_y) const {
 
     SDL_RenderFillRects(renderer, blocks.data(), blocks.size());
 }
-#pragma optimize( "", off )
 void Shape::calc_coors() {
     curr_coors = default_coors;
     for (int i {0}; i < rotations; i++)
@@ -71,4 +70,3 @@ void Shape::calc_coors() {
             y = tmp;            
         }
 }
-#pragma optimize( "", on )
