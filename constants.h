@@ -1,5 +1,6 @@
 #pragma once
 #include <array>
+#include <string>
 
 constexpr int block_size {20};
 constexpr int speed {block_size};
@@ -8,7 +9,7 @@ constexpr int window_width {480};
 constexpr int block_rows {14};
 constexpr int block_cols {7};
 
-constexpr char* font_file {"game_over.ttf"};
+constexpr std::string_view font_file = "game_over.ttf";
 constexpr int font_size {60};
 
 constexpr std::array<std::pair<int, int>, 3> block_L {
