@@ -24,6 +24,7 @@ public:
     void draw(SDL_Renderer *renderer, int offset_x = 0, int offset_y = 0) const;
     void move_right();
     void move_left();
+    bool is_out_of_bounds() const;
 };
 
 #endif

@@ -30,6 +30,11 @@ void Shape::rotate() {
     rotations = (rotations + 1) % possible_rotations;
     SDL_Log("Rotations: %d", rotations);
     calc_coors();
+    bool out = is_out_of_bounds();
+    SDL_Log("Out of bounds: %s", out ? "true" : "false");
+    if (out)
+        rotations = previous_roation;
+    calc_coors();
 }
 
 std::array<std::pair<int, int>, 4> Shape::get_raw_coordinates(int offset_x, int offset_y) const {
@@ -73,6 +78,13 @@ void Shape::calc_coors() {
 
 void Shape::move_left() {
     center.first -= speed;
+}
+
+bool Shape::is_out_of_bounds() const {
+    for (auto [x, y]: get_raw_coordinates())
+        if (x + 20 > right_boundary || x < left_boundary || y + 20 > bottom_boundary)
+            return true;
+    return false;
 }
 
 void Shape::move_right() {
