@@ -132,8 +132,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="draw_grid.cpp" />
     <ClCompile Include="Score.cpp" />
     <ClCompile Include="TextRenderer.cpp" />
+    <ClInclude Include="draw_grid.h" />
     <ClInclude Include="Next_block.h" />
     <ClCompile Include="Next_block.cpp" />
     <ClCompile Include="Shape.cpp" />

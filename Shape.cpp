@@ -1,8 +1,8 @@
 #include "Shape.h"
 
 Shape::Shape(int x, std::array<std::pair<int, int>, 3> &shape, short rotation)
-    : center {x, 0}, rotations {rotation}, default_coors {&shape}, curr_coors {} {
-    curr_coors = *default_coors;
+    : center {x, 10}, rotations {rotation}, default_coors {shape}, curr_coors {} {
+    curr_coors = default_coors;
 }
 
 Shape &Shape::operator=(const Shape &shape) {
@@ -16,10 +16,19 @@ Shape &Shape::operator=(const Shape &shape) {
 
 void Shape::update_center() {
     center.second += speed;
+    SDL_Log("%d", center.second);
 }
 
 void Shape::rotate() {
-    rotations = ++rotations % 4;
+    if (default_coors == block_square)
+        return;
+    short possible_rotations = 4;
+    if (default_coors == block_Z || default_coors == block_reversed_Z ||
+        default_coors == block_line)
+        possible_rotations = 2;
+        
+    rotations = (rotations + 1) % possible_rotations;
+    SDL_Log("Rotations: %d", rotations);
     calc_coors();
 }
 
@@ -49,21 +58,17 @@ void Shape::draw(SDL_Renderer *renderer, int offset_x, int offset_y) const {
         };
         curr_block++;
     }
-    blocks[blocks.size() - 1] = SDL_FRect {
-        static_cast<float>(offset_x), static_cast<float>(offset_y),
-        block_size, block_size
-    };
 
     SDL_RenderFillRects(renderer, blocks.data(), blocks.size());
 }
-
+#pragma optimize( "", off )
 void Shape::calc_coors() {
-    std::array<std::pair<int, int>, 3> curr_coors {*default_coors};
-    int tmp {};
+    curr_coors = default_coors;
     for (int i {0}; i < rotations; i++)
         for (auto &[x, y]: curr_coors) {
-            tmp = x;
+            int tmp = x;
             x = -y;
             y = tmp;            
         }
 }
+#pragma optimize( "", on )

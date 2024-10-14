@@ -12,7 +12,7 @@ class Shape {
 private:
     std::pair<int, int> center;
     short rotations; // ranges from 0 to 3
-    std::array<std::pair<int, int>, 3> const *default_coors;
+    std::array<std::pair<int, int>, 3> default_coors;
     std::array<std::pair<int, int>, 3> curr_coors;
 public:
     Shape(int x, std::array<std::pair<int, int>, 3> &shape, short rotation = 0);

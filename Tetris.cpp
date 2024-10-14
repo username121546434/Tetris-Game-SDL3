@@ -18,6 +18,7 @@ struct AppData {
     //std::map<const std::array<std::pair<int, int>, 3>&, short> cached_rotation;
     std::array<std::array<SDL_Color, 7>, 14> grid;
     TextRenderer text;
+    uint64_t last_tick;
 };
 
 
@@ -40,13 +41,16 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
     }
 
     AppData *ad = static_cast<AppData*>(SDL_calloc(1, sizeof(AppData)));
+    // TODO: make cached rotations work
     //ad->cached_rotation = std::map<const std::array<std::pair<int, int>, 3>&, short> {};
     ad->score = 0;
+    // TODO: make it use a constant starting x value instead of random one
     ad->curr_shape = Shape {SDL_rand(180) + 30, get_next_block()};
     ad->grid = std::array<std::array<SDL_Color, 7>, 14> {};
     ad->window = window;
     ad->renderer = renderer;
-    ad->text = TextRenderer {font_file, font_size};
+    ad->text = TextRenderer {std::string {font_file}, font_size};
+    ad->last_tick = SDL_GetTicks();
 
     *appstate = ad;
 
@@ -56,6 +60,12 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
 SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
     if (event->type == SDL_EVENT_QUIT) {
         return SDL_APP_SUCCESS;
+    }
+    AppData *ad {static_cast<AppData *>(appstate)};
+    if (event->type == SDL_EVENT_KEY_DOWN) {
+        if (event->key.key == SDLK_UP) {
+            ad->curr_shape.rotate();
+        }
     }
     return SDL_APP_CONTINUE;
 }
@@ -70,6 +80,13 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
     draw_next_block_widget(renderer, ad->curr_shape, ad->text);
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     draw_score_widget(renderer, 0, ad->text);
+    draw_grid(renderer, ad->grid);
+    ad->curr_shape.draw(renderer);
+    
+    if (SDL_GetTicks() - ad->last_tick >= 500) {
+        ad->curr_shape.update_center();
+        ad->last_tick = SDL_GetTicks();
+    }
 
     SDL_RenderPresent(renderer);
     return SDL_APP_CONTINUE;
