@@ -9,6 +9,11 @@ constexpr int window_width {480};
 constexpr int block_rows {14};
 constexpr int block_cols {7};
 
+constexpr int left_boundary {30};
+constexpr int right_boundary {270};
+constexpr int bottom_boundary {450};
+constexpr int top_boundary {30};
+
 constexpr std::string_view font_file = "game_over.ttf";
 constexpr int font_size {60};
 
