@@ -70,3 +70,11 @@ void Shape::calc_coors() {
             y = tmp;            
         }
 }
+
+void Shape::move_left() {
+    center.first -= speed;
+}
+
+void Shape::move_right() {
+    center.first += speed;
+}

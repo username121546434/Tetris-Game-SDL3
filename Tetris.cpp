@@ -65,6 +65,10 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
     if (event->type == SDL_EVENT_KEY_DOWN) {
         if (event->key.key == SDLK_UP) {
             ad->curr_shape.rotate();
+        } else if (event->key.key == SDLK_RIGHT) {
+            ad->curr_shape.move_right();
+        } else if (event->key.key == SDLK_LEFT) {
+            ad->curr_shape.move_left();
         }
     }
     return SDL_APP_CONTINUE;
