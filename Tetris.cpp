@@ -16,7 +16,7 @@ struct AppData {
     int score;
     Shape curr_shape;
     //std::map<const std::array<std::pair<int, int>, 3>&, short> cached_rotation;
-    std::array<std::array<SDL_Color, 7>, 14> grid;
+    std::array<std::array<SDL_Color, 12>, 21> grid;
     TextRenderer text;
     uint64_t last_tick;
 };
@@ -44,9 +44,8 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
     // TODO: make cached rotations work
     //ad->cached_rotation = std::map<const std::array<std::pair<int, int>, 3>&, short> {};
     ad->score = 0;
-    // TODO: make it use a constant starting x value instead of random one
     ad->curr_shape = Shape {130, get_next_block()};
-    ad->grid = std::array<std::array<SDL_Color, 7>, 14> {};
+    ad->grid = std::array<std::array<SDL_Color, 12>, 21> {};
     ad->window = window;
     ad->renderer = renderer;
     ad->text = TextRenderer {std::string {font_file}, font_size};
