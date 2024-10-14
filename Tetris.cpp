@@ -6,6 +6,7 @@
 #include "Score.h"
 #include <map>
 #include "TextRenderer.h"
+#include "draw_grid.h"
 
 static int score {0};
 
