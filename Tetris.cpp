@@ -45,7 +45,7 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
     //ad->cached_rotation = std::map<const std::array<std::pair<int, int>, 3>&, short> {};
     ad->score = 0;
     // TODO: make it use a constant starting x value instead of random one
-    ad->curr_shape = Shape {120, get_next_block()};
+    ad->curr_shape = Shape {130, get_next_block()};
     ad->grid = std::array<std::array<SDL_Color, 7>, 14> {};
     ad->window = window;
     ad->renderer = renderer;
