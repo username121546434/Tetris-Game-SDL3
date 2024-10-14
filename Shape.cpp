@@ -1,7 +1,7 @@
 #include "Shape.h"
 
 Shape::Shape(int x, std::array<std::pair<int, int>, 3> &shape, uint8_t rotation)
-    : center {x, 10}, rotations {rotation}, default_coors {shape}, curr_coors {} {
+    : center {x, top_boundary - block_size}, rotations {rotation}, default_coors {shape}, curr_coors {} {
     curr_coors = default_coors;
 }
 
@@ -82,9 +82,34 @@ void Shape::move_left() {
 
 bool Shape::is_out_of_bounds() const {
     for (auto [x, y]: get_raw_coordinates())
-        if (x + 20 > right_boundary || x < left_boundary || y + 20 > bottom_boundary)
+        if (x + block_size > right_boundary || x < left_boundary || y + block_size > bottom_boundary)
             return true;
     return false;
+}
+
+std::optional<std::array<std::pair<int, int>, 4>> Shape::landed_at_bottom(const std::array<std::array<SDL_Color, 12>, 21> &grid) const {
+    auto coors {get_raw_coordinates()};
+    for (auto [x, y]: coors) {
+        if (y + block_size >= bottom_boundary)
+            return {coors};
+        int grid_y {-1};
+        for (const auto &row: grid) {
+            grid_y++;
+            int grid_x {-1};
+            for (SDL_Color color: row) {
+                grid_x++;
+                if (color.r == 0 && color.g == 0 && color.b == 0 && color.a == 0)
+                    continue;
+                int actual_x {grid_x * block_size + left_boundary};
+                int actual_y {grid_y * block_size + left_boundary};
+                if (actual_x != x)
+                    continue;
+                if (y + 20 == actual_y)
+                    return {coors};
+            }
+        }
+    }
+    return {};
 }
 
 void Shape::move_right() {

@@ -6,6 +6,8 @@
 #include <array>
 #include "constants.h"
 #include <SDL3/SDL.h>
+#include <array>
+#include <optional>
 
 class Shape {
 
@@ -25,6 +27,7 @@ public:
     void move_right();
     void move_left();
     bool is_out_of_bounds() const;
+    std::optional<std::array<std::pair<int, int>, 4>> landed_at_bottom(const std::array<std::array<SDL_Color, 12>, 21> &grid) const;
 };
 
 #endif
