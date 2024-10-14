@@ -4,5 +4,5 @@
 #include <array>
 #include "constants.h"
 
-void draw_grid(SDL_Renderer *renderer, const std::array<std::array<SDL_Color, 7>, 14> &grid);
+void draw_grid(SDL_Renderer *renderer, const std::array<std::array<SDL_Color, 12>, 21> &grid);
 
