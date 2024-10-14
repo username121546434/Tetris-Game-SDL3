@@ -11,11 +11,11 @@ class Shape {
 
 private:
     std::pair<int, int> center;
-    short rotations; // ranges from 0 to 3
+    uint8_t rotations; // ranges from 0 to 3
     std::array<std::pair<int, int>, 3> default_coors;
     std::array<std::pair<int, int>, 3> curr_coors;
 public:
-    Shape(int x, std::array<std::pair<int, int>, 3> &shape, short rotation = 0);
+    Shape(int x, std::array<std::pair<int, int>, 3> &shape, uint8_t rotation = 0);
     Shape &operator=(const Shape &);
     void calc_coors();
     void update_center();

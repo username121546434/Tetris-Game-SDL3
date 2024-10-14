@@ -1,6 +1,6 @@
 #include "Shape.h"
 
-Shape::Shape(int x, std::array<std::pair<int, int>, 3> &shape, short rotation)
+Shape::Shape(int x, std::array<std::pair<int, int>, 3> &shape, uint8_t rotation)
     : center {x, 10}, rotations {rotation}, default_coors {shape}, curr_coors {} {
     curr_coors = default_coors;
 }
@@ -26,7 +26,7 @@ void Shape::rotate() {
     if (default_coors == block_Z || default_coors == block_reversed_Z ||
         default_coors == block_line)
         possible_rotations = 2;
-        
+    uint8_t previous_roation {rotations};
     rotations = (rotations + 1) % possible_rotations;
     SDL_Log("Rotations: %d", rotations);
     calc_coors();
