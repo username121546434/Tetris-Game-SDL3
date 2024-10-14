@@ -21,6 +21,17 @@ struct AppData {
     uint64_t last_tick;
 };
 
+void check_if_block_landed(AppData *ad) {
+    auto landed {ad->curr_shape.landed_at_bottom(ad->grid)};
+    if (landed) {
+        for (auto [x, y]: *landed) {
+            int grid_x = (x - left_boundary) / block_size;
+            int grid_y = (y - left_boundary) / block_size;
+            ad->grid[grid_y][grid_x] = ad->curr_shape.color;
+        }
+        ad->curr_shape = Shape {130, get_next_block()};
+    }
+}
 
 SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
     SDL_Window *window = NULL;
@@ -68,6 +79,10 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
             ad->curr_shape.move_right();
         } else if (event->key.key == SDLK_LEFT) {
             ad->curr_shape.move_left();
+        } else if (event->key.key == SDLK_DOWN) {
+            ad->curr_shape.update_center();
+            ad->score++;
+            check_if_block_landed(ad);
         }
     }
     return SDL_APP_CONTINUE;
@@ -89,6 +104,7 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
     if (SDL_GetTicks() - ad->last_tick >= 500) {
         ad->curr_shape.update_center();
         ad->last_tick = SDL_GetTicks();
+        check_if_block_landed(ad);
     }
 
     SDL_RenderPresent(renderer);

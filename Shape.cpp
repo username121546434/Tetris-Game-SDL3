@@ -1,7 +1,7 @@
 #include "Shape.h"
 
-Shape::Shape(int x, std::array<std::pair<int, int>, 3> &shape, uint8_t rotation)
-    : center {x, top_boundary - block_size}, rotations {rotation}, default_coors {shape}, curr_coors {} {
+Shape::Shape(int x, std::array<std::pair<int, int>, 3> &shape, uint8_t rotation, SDL_Color color)
+    : center {x, top_boundary - block_size}, rotations {rotation}, default_coors {shape}, curr_coors {}, color {color} {
     curr_coors = default_coors;
 }
 
@@ -10,6 +10,7 @@ Shape &Shape::operator=(const Shape &shape) {
     this->curr_coors = shape.curr_coors;
     this->rotations = shape.rotations;
     this->default_coors = shape.default_coors;
+    this->color = shape.color;
 
     return *this;
 }
