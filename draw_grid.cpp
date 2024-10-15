@@ -2,10 +2,6 @@
 #include <sstream>
 
 void draw_grid(SDL_Renderer *renderer, const std::array<std::array<SDL_Color, 12>, 21> &grid) {
-    SDL_RenderLine(renderer, left_boundary, top_boundary, left_boundary, bottom_boundary);
-    SDL_RenderLine(renderer, right_boundary, top_boundary, right_boundary, bottom_boundary);
-    SDL_RenderLine(renderer, left_boundary, bottom_boundary, right_boundary, bottom_boundary);
-    
     int y {0};
     for (const auto &row: grid) {
         int x {0};
@@ -20,4 +16,9 @@ void draw_grid(SDL_Renderer *renderer, const std::array<std::array<SDL_Color, 12
         }
         y++;
     }
+
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    SDL_RenderLine(renderer, left_boundary, top_boundary, left_boundary, bottom_boundary);
+    SDL_RenderLine(renderer, right_boundary, top_boundary, right_boundary, bottom_boundary);
+    SDL_RenderLine(renderer, left_boundary, bottom_boundary, right_boundary, bottom_boundary);
 }
