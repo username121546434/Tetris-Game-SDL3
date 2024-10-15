@@ -1,7 +1,7 @@
 #include "Shape.h"
 
-Shape::Shape(int x, std::array<std::pair<int, int>, 3> &shape, uint8_t rotation, SDL_Color color)
-    : center {x, top_boundary - block_size}, rotations {rotation}, default_coors {shape}, curr_coors {}, color {color} {
+Shape::Shape(int x, std::array<std::pair<int, int>, 3> &shape, uint8_t rotation)
+    : center {x, top_boundary - block_size}, rotations {rotation}, default_coors {shape}, curr_coors {}, color {color_of_blocks.at(shape)} {
     curr_coors = default_coors;
 }
 
@@ -54,7 +54,7 @@ std::array<std::pair<int, int>, 4> Shape::get_raw_coordinates(int offset_x, int 
 }
 
 void Shape::draw(SDL_Renderer *renderer, int offset_x, int offset_y) const {
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+    SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
     std::array<SDL_FRect, 4> blocks {};
     int curr_block {0};
     for (const auto &[x, y]: get_raw_coordinates(offset_x, offset_y)) {

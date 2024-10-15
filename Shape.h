@@ -19,7 +19,7 @@ private:
 public:
     SDL_Color color;
 
-    Shape(int x, std::array<std::pair<int, int>, 3> &shape, uint8_t rotation = 0, SDL_Color color = SDL_Color {255, 0, 0, 0});
+    Shape(int x, std::array<std::pair<int, int>, 3> &shape, uint8_t rotation = 0);
     Shape &operator=(const Shape &);
     void calc_coors();
     void update_center();

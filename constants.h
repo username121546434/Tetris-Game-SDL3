@@ -1,6 +1,8 @@
 #pragma once
 #include <array>
 #include <string>
+#include <map>
+#include <SDL3/SDL.h>
 
 constexpr int block_size {20};
 constexpr int speed {block_size};
@@ -62,5 +64,15 @@ constexpr std::array<std::array<std::pair<int, int>, 3>, 7> all_blocks {
     block_Z,
     block_reversed_Z,
     block_square
+};
+
+const std::map<std::array<std::pair<int, int>, 3>, SDL_Color> color_of_blocks {
+    {block_L, {173, 235, 150, 1}},
+    {block_reversed_L, {150, 235, 219, 1}},
+    {block_line, {118, 29, 150, 1}},
+    {block_podium, {237, 228, 62, 1}},
+    {block_Z, {237, 123, 62, 1}},
+    {block_reversed_Z, {237, 62, 62, 1}},
+    {block_square, {84, 90, 247, 1}},
 };
 
