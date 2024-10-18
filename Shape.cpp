@@ -1,6 +1,6 @@
 #include "Shape.h"
 
-Shape::Shape(int x, std::array<std::pair<int, int>, 3> &shape, uint8_t rotation)
+Shape::Shape(int x, std::array<Coordinate, 3> &shape, uint8_t rotation)
     : center {x, top_boundary - block_size}, rotations {rotation}, default_coors {shape}, curr_coors {}, color {color_of_blocks.at(shape)} {
     curr_coors = default_coors;
 }
@@ -38,18 +38,18 @@ void Shape::rotate() {
     calc_coors();
 }
 
-std::array<std::pair<int, int>, 4> Shape::get_raw_coordinates(int offset_x, int offset_y) const {
-    std::array<std::pair<int, int>, 4> coors;
+std::array<Coordinate, 4> Shape::get_raw_coordinates(int offset_x, int offset_y) const {
+    std::array<Coordinate, 4> coors;
     if (offset_x == 0)
         offset_x = center.first;
     if (offset_y == 0)
         offset_y = center.second;
     int curr_coor {0};
     for (const auto &[x, y]: curr_coors) {
-        coors[curr_coor] = std::pair<int, int> {x * block_size + offset_x, y * block_size + offset_y};
+        coors[curr_coor] = Coordinate {x * block_size + offset_x, y * block_size + offset_y};
         curr_coor++;
     }
-    coors[coors.size() - 1] = std::pair<int, int> {offset_x, offset_y};
+    coors[coors.size() - 1] = Coordinate {offset_x, offset_y};
     return coors;
 }
 
@@ -88,7 +88,7 @@ bool Shape::is_out_of_bounds() const {
     return false;
 }
 
-std::optional<std::array<std::pair<int, int>, 4>> Shape::landed_at_bottom(const std::array<std::array<SDL_Color, 12>, 21> &grid) const {
+std::optional<std::array<Coordinate, 4>> Shape::landed_at_bottom(const std::array<std::array<SDL_Color, 12>, 21> &grid) const {
     auto coors {get_raw_coordinates()};
     for (auto [x, y]: coors) {
         if (y + block_size >= bottom_boundary)

@@ -4,6 +4,8 @@
 #include <map>
 #include <SDL3/SDL.h>
 
+typedef std::pair<int, int> Coordinate;
+
 constexpr int block_size {20};
 constexpr int speed {block_size};
 constexpr int window_height {480};
@@ -19,44 +21,44 @@ constexpr int top_boundary {30};
 constexpr std::string_view font_file = "game_over.ttf";
 constexpr int font_size {60};
 
-constexpr std::array<std::pair<int, int>, 3> block_L {
+constexpr std::array<Coordinate, 3> block_L {
     std::pair {0, -1}, /*  center   */
     std::pair {0,  1}, std::pair {1, 1}
 };
 
-constexpr std::array<std::pair<int, int>, 3> block_reversed_L {
+constexpr std::array<Coordinate, 3> block_reversed_L {
      /*  center   */   std::pair {0, -1},
     std::pair {-1, 1}, std::pair {0, 1}
 };
 
-constexpr std::array<std::pair<int, int>, 3> block_square {
+constexpr std::array<Coordinate, 3> block_square {
      /*  center   */  std::pair {1, 0},
     std::pair {0, 1}, std::pair {1, 1}
 };
 
-constexpr std::array<std::pair<int, int>, 3> block_podium {
+constexpr std::array<Coordinate, 3> block_podium {
                       std::pair {0, -1},
     std::pair {-1, 0}, /*  center   */  std::pair {1, 0}
 };
 
-constexpr std::array<std::pair<int, int>, 3> block_Z {
+constexpr std::array<Coordinate, 3> block_Z {
     std::pair {-1, -1}, std::pair {0, -1},
                         /*  center   */   std::pair {1, 0}
 };
 
-constexpr std::array<std::pair<int, int>, 3> block_reversed_Z {
+constexpr std::array<Coordinate, 3> block_reversed_Z {
                                 std::pair {0, -1}, std::pair {1, -1},
     std::pair {-1, 0} /*  center   */
 };
 
-constexpr std::array<std::pair<int, int>, 3> block_line {
+constexpr std::array<Coordinate, 3> block_line {
     std::pair {0, -1},
     /*    center    */
     std::pair {0, 1},
     std::pair {0, 2}
 };
 
-constexpr std::array<std::array<std::pair<int, int>, 3>, 7> all_blocks {
+constexpr std::array<std::array<Coordinate, 3>, 7> all_blocks {
     block_L,
     block_reversed_L,
     block_line,
@@ -66,7 +68,7 @@ constexpr std::array<std::array<std::pair<int, int>, 3>, 7> all_blocks {
     block_square
 };
 
-const std::map<std::array<std::pair<int, int>, 3>, SDL_Color> color_of_blocks {
+const std::map<std::array<Coordinate, 3>, SDL_Color> color_of_blocks {
     {block_L, {173, 235, 150, 1}},
     {block_reversed_L, {150, 235, 219, 1}},
     {block_line, {118, 29, 150, 1}},

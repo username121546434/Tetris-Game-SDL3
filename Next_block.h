@@ -6,6 +6,6 @@
 #include "Shape.h"
 #include "TextRenderer.h"
 
-std::array<std::pair<int, int>, 3> get_next_block();
+std::array<Coordinate, 3> get_next_block();
 
 void draw_next_block_widget(SDL_Renderer *renderer, const Shape &shape, const TextRenderer &text);

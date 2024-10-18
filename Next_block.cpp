@@ -1,6 +1,6 @@
 #include "Next_block.h"
 
-std::array<std::pair<int, int>, 3> get_next_block() {
+std::array<Coordinate, 3> get_next_block() {
 	return all_blocks[SDL_rand(all_blocks.size())];
 }
 
