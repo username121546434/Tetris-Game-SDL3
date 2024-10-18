@@ -22,10 +22,10 @@ public:
     Shape(int x, std::array<std::pair<int, int>, 3> &shape, uint8_t rotation = 0);
     Shape &operator=(const Shape &);
     void calc_coors();
-    void update_center();
     void rotate();
     std::array<std::pair<int, int>, 4> get_raw_coordinates(int offset_x = 0, int offset_y = 0) const;
     void draw(SDL_Renderer *renderer, int offset_x = 0, int offset_y = 0) const;
+    void move_down();
     void move_right();
     void move_left();
     bool is_out_of_bounds() const;

@@ -80,7 +80,7 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
         } else if (event->key.key == SDLK_LEFT) {
             ad->curr_shape.move_left();
         } else if (event->key.key == SDLK_DOWN) {
-            ad->curr_shape.update_center();
+            ad->curr_shape.move_down();
             ad->score++;
             check_if_block_landed(ad);
         }
@@ -102,7 +102,7 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
     ad->curr_shape.draw(renderer);
     
     if (SDL_GetTicks() - ad->last_tick >= 500) {
-        ad->curr_shape.update_center();
+        ad->curr_shape.move_down();
         ad->last_tick = SDL_GetTicks();
         check_if_block_landed(ad);
     }

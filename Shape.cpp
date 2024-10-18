@@ -15,7 +15,7 @@ Shape &Shape::operator=(const Shape &shape) {
     return *this;
 }
 
-void Shape::update_center() {
+void Shape::move_down() {
     center.second += speed;
     SDL_Log("%d", center.second);
 }
