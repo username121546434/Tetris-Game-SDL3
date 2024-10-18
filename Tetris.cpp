@@ -25,8 +25,7 @@ void check_if_block_landed(AppData *ad) {
     auto landed {ad->curr_shape.landed_at_bottom(ad->grid)};
     if (landed) {
         for (auto [x, y]: *landed) {
-            int grid_x = (x - left_boundary) / block_size;
-            int grid_y = (y - left_boundary) / block_size;
+            auto [grid_x, grid_y] = to_grid_coordinates(x, y);
             ad->grid[grid_y][grid_x] = ad->curr_shape.color;
         }
         ad->curr_shape = Shape {130, get_next_block()};
@@ -76,9 +75,9 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
         if (event->key.key == SDLK_UP) {
             ad->curr_shape.rotate();
         } else if (event->key.key == SDLK_RIGHT) {
-            ad->curr_shape.move_right();
+            ad->curr_shape.move_right(ad->grid);
         } else if (event->key.key == SDLK_LEFT) {
-            ad->curr_shape.move_left();
+            ad->curr_shape.move_left(ad->grid);
         } else if (event->key.key == SDLK_DOWN) {
             ad->curr_shape.move_down();
             ad->score++;

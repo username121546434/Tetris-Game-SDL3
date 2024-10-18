@@ -53,6 +53,17 @@ std::array<Coordinate, 4> Shape::get_raw_coordinates(int offset_x, int offset_y)
     return coors;
 }
 
+std::array<Coordinate, 4> Shape::get_grid_coordinates(int offset_x, int offset_y) const {
+    std::array<Coordinate, 4> coors;
+    std::array<Coordinate, 4> raw_coors {get_raw_coordinates(offset_x, offset_y)};
+    int curr_coor {0};
+    for (auto coor : raw_coors) {
+        coors[curr_coor] = to_grid_coordinates(coor.first, coor.second);
+        curr_coor++;
+    }
+    return coors;
+}
+
 void Shape::draw(SDL_Renderer *renderer, int offset_x, int offset_y) const {
     SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
     std::array<SDL_FRect, 4> blocks {};
@@ -77,14 +88,34 @@ void Shape::calc_coors() {
         }
 }
 
-void Shape::move_left() {
+void Shape::move_left(const std::array<std::array<SDL_Color, 12>, 21> &grid) {
     center.first -= speed;
+    if (is_out_of_bounds() || intersects_with_grid(grid))
+        center.first += speed;
 }
 
 bool Shape::is_out_of_bounds() const {
     for (auto [x, y]: get_raw_coordinates())
         if (x + block_size > right_boundary || x < left_boundary || y + block_size > bottom_boundary)
             return true;
+    return false;
+}
+
+bool Shape::intersects_with_grid(const std::array<std::array<SDL_Color, 12>, 21> &grid) const {
+    std::array<Coordinate, 4> coors;
+    auto grid_coors {get_grid_coordinates()};
+    int x {0}, y {0};
+    for (const auto &row: grid) {
+        for (auto color: row) {
+            if (color.r == 0 && color.g == 0 && color.b == 0)
+                continue;
+            for (auto [cx, cy]: grid_coors)
+                if (cx == x && cy == y)
+                    return true;
+            x++;
+        }
+        y++;
+    }
     return false;
 }
 
@@ -113,6 +144,12 @@ std::optional<std::array<Coordinate, 4>> Shape::landed_at_bottom(const std::arra
     return {};
 }
 
-void Shape::move_right() {
+void Shape::move_right(const std::array<std::array<SDL_Color, 12>, 21> &grid) {
     center.first += speed;
+    if (is_out_of_bounds() || intersects_with_grid(grid))
+        center.first -= speed;
+}
+
+Coordinate to_grid_coordinates(int x, int y) {
+    return {(x - left_boundary) / block_size, (y - top_boundary) / block_size};
 }
