@@ -20,6 +20,7 @@ constexpr int top_boundary {30};
 
 constexpr std::string_view font_file = "game_over.ttf";
 constexpr int font_size {60};
+constexpr int score_font_size {100};
 
 constexpr std::array<Coordinate, 3> block_L {
     std::pair {0, -1}, /*  center   */

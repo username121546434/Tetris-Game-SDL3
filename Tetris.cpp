@@ -20,6 +20,7 @@ struct AppData {
     //std::map<const std::array<Coordinate, 3>&, short> cached_rotation;
     std::array<std::array<SDL_Color, 12>, 21> grid;
     TextRenderer text;
+    TextRenderer score_text;
     uint64_t last_tick;
 };
 
@@ -77,6 +78,7 @@ void remove_rows(AppData &ad, const std::vector<int> &rows) {
             }
         }
     }
+    ad.score += rows.size() * 10;
 }
 
 SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
@@ -107,6 +109,7 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
     ad->window = window;
     ad->renderer = renderer;
     ad->text = TextRenderer {std::string {font_file}, font_size};
+    ad->score_text = TextRenderer {std::string {font_file}, score_font_size};
     ad->last_tick = SDL_GetTicks();
 
     *appstate = ad;
@@ -131,7 +134,9 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
                 ad->curr_shape.move_down();
                 ad->score++;
                 check_if_block_landed(ad);
-                remove_rows(*ad, check_if_row_is_made(*ad));
+                auto rows {check_if_row_is_made(*ad)};
+                remove_rows(*ad, rows);
+                SDL_Log("Rows remove: %d", rows.size());
             }
         }
     }
@@ -147,7 +152,7 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     draw_next_block_widget(renderer, ad->next_shape, ad->text);
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-    draw_score_widget(renderer, 0, ad->text);
+    draw_score_widget(renderer, ad->score, ad->text, ad->score_text);
     draw_grid(renderer, ad->grid);
     ad->curr_shape.draw(renderer);
     
