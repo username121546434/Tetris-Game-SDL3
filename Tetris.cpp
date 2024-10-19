@@ -7,6 +7,7 @@
 #include <map>
 #include "TextRenderer.h"
 #include "draw_grid.h"
+#include <vector>
 
 static int score {0};
 
@@ -33,6 +34,48 @@ void check_if_block_landed(AppData *ad) {
         }
         ad->curr_shape = ad->next_shape;
         ad->next_shape = Shape {130, get_next_block()};
+    }
+}
+
+std::vector<int> check_if_row_is_made(const AppData &ad) {
+    int y {0};
+    std::vector<int> rows;
+    rows.reserve(ad.grid.size());
+    for (const auto &row: ad.grid) {
+        int x {-1};
+        bool full_row {true};
+        for (SDL_Color color: row) {
+            x++;
+            if (color.r == 0 && color.g == 0 && color.b == 0) {
+                full_row = false;
+                break;
+            }
+        }
+        if (full_row)
+            rows.push_back(y);
+        y++;
+    }
+
+    return rows;
+}
+
+void remove_rows(AppData &ad, const std::vector<int> &rows) {
+    for (auto row_to_be_removed: rows) {
+        for (int r {row_to_be_removed}; r >= 0; r--) {
+            int x {0};
+            for (auto &color: ad.grid.at(r)) {
+                SDL_Color above_color;
+                if (r != 0)
+                    above_color = ad.grid.at(r - 1).at(x);
+                else
+                    above_color = {0, 0, 0, 0};
+                color.r = above_color.r;
+                color.g = above_color.g;
+                color.b = above_color.b;
+                color.a = above_color.a;
+                x++;
+            }
+        }
     }
 }
 
@@ -88,6 +131,7 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
                 ad->curr_shape.move_down();
                 ad->score++;
                 check_if_block_landed(ad);
+                remove_rows(*ad, check_if_row_is_made(*ad));
             }
         }
     }
@@ -111,6 +155,7 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
         ad->curr_shape.move_down();
         ad->last_tick = SDL_GetTicks();
         check_if_block_landed(ad);
+        remove_rows(*ad, check_if_row_is_made(*ad));
     }
 
     SDL_RenderPresent(renderer);
