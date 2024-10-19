@@ -104,15 +104,17 @@ bool Shape::is_out_of_bounds() const {
 bool Shape::intersects_with_grid(const std::array<std::array<SDL_Color, 12>, 21> &grid) const {
     std::array<Coordinate, 4> coors;
     auto grid_coors {get_grid_coordinates()};
-    int x {0}, y {0};
+    int y {0};
     for (const auto &row: grid) {
+        int x {-1};
         for (auto color: row) {
+            x++;
             if (color.r == 0 && color.g == 0 && color.b == 0)
                 continue;
-            for (auto [cx, cy]: grid_coors)
+            for (auto [cx, cy]: grid_coors) {
                 if (cx == x && cy == y)
                     return true;
-            x++;
+            }
         }
         y++;
     }
