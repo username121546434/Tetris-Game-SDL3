@@ -178,7 +178,11 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 }
 
 void SDL_AppQuit(void *appstate, SDL_AppResult result) {
-    SDL_free(appstate);
-    TTF_Quit();
-    /* SDL will clean up the window/renderer for us. */
+    if (appstate != NULL) {
+        AppData *ad {static_cast<AppData *>(appstate)};
+        SDL_DestroyRenderer(ad->renderer);
+        SDL_DestroyWindow(ad->window);
+        SDL_free(ad);
+        TTF_Quit();
+    }
 }
