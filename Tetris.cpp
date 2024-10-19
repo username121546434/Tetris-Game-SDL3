@@ -22,11 +22,17 @@ struct AppData {
     TextRenderer text;
     TextRenderer score_text;
     uint64_t last_tick;
+    bool game_over;
 };
 
 void check_if_block_landed(AppData *ad) {
     auto landed {ad->curr_shape.landed_at_bottom(ad->grid)};
     if (landed) {
+        auto game_over {ad->next_shape.landed_at_bottom(ad->grid)};
+        if (game_over) {
+            ad->game_over = true;
+            return;
+        }
         for (auto [x, y]: *landed) {
             auto [grid_x, grid_y] = to_grid_coordinates(x, y);
             if (grid_x < 0 || grid_y < 0)
@@ -111,6 +117,7 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
     ad->text = TextRenderer {std::string {font_file}, font_size};
     ad->score_text = TextRenderer {std::string {font_file}, score_font_size};
     ad->last_tick = SDL_GetTicks();
+    ad->game_over = false;
 
     *appstate = ad;
 
@@ -136,7 +143,6 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
                 check_if_block_landed(ad);
                 auto rows {check_if_row_is_made(*ad)};
                 remove_rows(*ad, rows);
-                SDL_Log("Rows remove: %d", rows.size());
             }
         }
     }
@@ -164,6 +170,10 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
     }
 
     SDL_RenderPresent(renderer);
+
+    if (ad->game_over)
+        return SDL_APP_SUCCESS;
+
     return SDL_APP_CONTINUE;
 }
 
