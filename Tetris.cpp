@@ -145,7 +145,7 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
     SDL_RenderClear(renderer);
 
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-    draw_next_block_widget(renderer, ad->curr_shape, ad->text);
+    draw_next_block_widget(renderer, ad->next_shape, ad->text);
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     draw_score_widget(renderer, 0, ad->text);
     draw_grid(renderer, ad->grid);
