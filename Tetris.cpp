@@ -140,11 +140,11 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
             if (!ad->curr_shape.intersects_with_grid(ad->grid)) {
                 ad->curr_shape.move_down();
                 ad->score++;
-                check_if_block_landed(ad);
-                auto rows {check_if_row_is_made(*ad)};
-                remove_rows(*ad, rows);
             }
         }
+        check_if_block_landed(ad);
+        auto rows {check_if_row_is_made(*ad)};
+        remove_rows(*ad, rows);
     }
     return SDL_APP_CONTINUE;
 }
