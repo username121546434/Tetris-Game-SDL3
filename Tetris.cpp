@@ -15,6 +15,7 @@ struct AppData {
     SDL_Renderer *renderer;
     int score;
     Shape curr_shape;
+    Shape next_shape;
     //std::map<const std::array<Coordinate, 3>&, short> cached_rotation;
     std::array<std::array<SDL_Color, 12>, 21> grid;
     TextRenderer text;
@@ -26,9 +27,12 @@ void check_if_block_landed(AppData *ad) {
     if (landed) {
         for (auto [x, y]: *landed) {
             auto [grid_x, grid_y] = to_grid_coordinates(x, y);
-            ad->grid[grid_y][grid_x] = ad->curr_shape.color;
+            if (grid_x < 0 || grid_y < 0)
+                continue;
+            ad->grid.at(grid_y).at(grid_x) = ad->curr_shape.color;
         }
-        ad->curr_shape = Shape {130, get_next_block()};
+        ad->curr_shape = ad->next_shape;
+        ad->next_shape = Shape {130, get_next_block()};
     }
 }
 
@@ -55,6 +59,7 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
     //ad->cached_rotation = std::map<const std::array<Coordinate, 3>&, short> {};
     ad->score = 0;
     ad->curr_shape = Shape {130, get_next_block()};
+    ad->next_shape = Shape {130, get_next_block()};
     ad->grid = std::array<std::array<SDL_Color, 12>, 21> {};
     ad->window = window;
     ad->renderer = renderer;
@@ -79,9 +84,11 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
         } else if (event->key.key == SDLK_LEFT) {
             ad->curr_shape.move_left(ad->grid);
         } else if (event->key.key == SDLK_DOWN) {
-            ad->curr_shape.move_down();
-            ad->score++;
-            check_if_block_landed(ad);
+            if (!ad->curr_shape.intersects_with_grid(ad->grid)) {
+                ad->curr_shape.move_down();
+                ad->score++;
+                check_if_block_landed(ad);
+            }
         }
     }
     return SDL_APP_CONTINUE;

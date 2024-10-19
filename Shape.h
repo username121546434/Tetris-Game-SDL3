@@ -19,7 +19,7 @@ private:
 public:
     SDL_Color color;
 
-    Shape(int x, std::array<Coordinate, 3> &shape, uint8_t rotation = 0);
+    Shape(int x, const std::array<Coordinate, 3> &shape, uint8_t rotation = 0);
     Shape &operator=(const Shape &);
     void calc_coors();
     void rotate();

@@ -1,8 +1,7 @@
 #include "Shape.h"
 
-Shape::Shape(int x, std::array<Coordinate, 3> &shape, uint8_t rotation)
-    : center {x, top_boundary - block_size}, rotations {rotation}, default_coors {shape}, curr_coors {}, color {color_of_blocks.at(shape)} {
-    curr_coors = default_coors;
+Shape::Shape(int x, const std::array<Coordinate, 3> &shape, uint8_t rotation)
+    : center {x, top_boundary - block_size}, rotations {rotation}, default_coors {shape}, curr_coors {shape}, color {color_of_blocks.at(shape)} {
 }
 
 Shape &Shape::operator=(const Shape &shape) {
