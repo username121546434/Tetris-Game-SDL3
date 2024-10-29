@@ -10,8 +10,8 @@ constexpr int block_size {20};
 constexpr int speed {block_size};
 constexpr int window_height {480};
 constexpr int window_width {480};
-constexpr int block_rows {14};
-constexpr int block_cols {7};
+constexpr int block_rows {21};
+constexpr int block_cols {12};
 
 constexpr int left_boundary {30};
 constexpr int right_boundary {270};

@@ -18,16 +18,21 @@ struct AppData {
     Shape curr_shape;
     Shape next_shape;
     //std::map<const std::array<Coordinate, 3>&, short> cached_rotation;
-    std::array<std::array<SDL_Color, 12>, 21> grid;
+    std::array<std::array<SDL_Color, block_cols>, block_rows> grid;
     TextRenderer text;
     TextRenderer score_text;
     uint64_t last_tick;
     bool game_over;
+    bool last_second_adjustment;
 };
 
-void check_if_block_landed(AppData *ad) {
+auto check_if_block_landed(AppData *ad) {
     auto landed {ad->curr_shape.landed_at_bottom(ad->grid)};
-    if (landed) {
+    return landed;
+}
+
+void replace_current_shape(const std::optional<std::array<Coordinate, 4>> &landed, AppData *ad) {
+    if (landed && !ad->last_second_adjustment) {
         auto game_over {ad->next_shape.landed_at_bottom(ad->grid)};
         if (game_over) {
             ad->game_over = true;
@@ -64,6 +69,15 @@ std::vector<int> check_if_row_is_made(const AppData &ad) {
     }
 
     return rows;
+}
+
+void check_and_replace_landed_block(AppData *ad) {
+    auto landed = check_if_block_landed(ad);
+    if (landed) {
+        ad->last_second_adjustment = !ad->last_second_adjustment;
+        replace_current_shape(landed, ad);
+    } else
+        ad->last_second_adjustment = false;
 }
 
 void remove_rows(AppData &ad, const std::vector<int> &rows) {
@@ -118,6 +132,7 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
     ad->score_text = TextRenderer {std::string {font_file}, score_font_size};
     ad->last_tick = SDL_GetTicks();
     ad->game_over = false;
+    ad->last_second_adjustment = false;
 
     *appstate = ad;
 
@@ -137,12 +152,12 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
         } else if (event->key.key == SDLK_LEFT) {
             ad->curr_shape.move_left(ad->grid);
         } else if (event->key.key == SDLK_DOWN) {
-            if (!ad->curr_shape.intersects_with_grid(ad->grid)) {
+            if (!ad->curr_shape.intersects_with_grid(ad->grid) && !ad->last_second_adjustment) {
                 ad->curr_shape.move_down();
                 ad->score++;
             }
         }
-        check_if_block_landed(ad);
+        check_and_replace_landed_block(ad);
         auto rows {check_if_row_is_made(*ad)};
         remove_rows(*ad, rows);
     }
@@ -163,9 +178,10 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
     ad->curr_shape.draw(renderer);
     
     if (SDL_GetTicks() - ad->last_tick >= 500) {
-        ad->curr_shape.move_down();
+        if (!ad->last_second_adjustment)
+            ad->curr_shape.move_down();
         ad->last_tick = SDL_GetTicks();
-        check_if_block_landed(ad);
+        check_and_replace_landed_block(ad);
         remove_rows(*ad, check_if_row_is_made(*ad));
     }
 
